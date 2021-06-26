@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "37092143660",
+    "firebase_url": "https://steadwin24.firebaseio.com",
+    "project_id": "steadwin24",
+    "storage_bucket": "steadwin24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092143660:android:162f40c62b909f5f",
+        "android_client_info": {
+          "package_name": "com.adistar.steadywinadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTj-XIFfA6b-H8EMsfZRQ-4TuG38G2wCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092143660:android:8057a79baa8f8f00",
+        "android_client_info": {
+          "package_name": "com.zitano.steadywin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTj-XIFfA6b-H8EMsfZRQ-4TuG38G2wCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092143660:android:89b9e832458b6a01025789",
+        "android_client_info": {
+          "package_name": "com.zitano.steadywin1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTj-XIFfA6b-H8EMsfZRQ-4TuG38G2wCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092143660-qek0ugvg8tobrq2nsagan6n40k6eb86u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

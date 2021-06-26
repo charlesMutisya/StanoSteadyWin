@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SteadyWin</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="_23_june">date</string>
+    <string name="post">post</string>
+    <string name="post_time">time</string>
+    <string name="action_settings">Settings</string>
+    <string name="feedback">Feedback</string>
+    <string name="share">Share</string>
+    <string name="submit_feedback">Submit</string>
+    <string name="rate_us_please">Rate us please</string>
+    <string name="about">About app</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="banner_ad">ca-app-pub-4759125171158565/1117327709</string>
+    <string name="interstitial_ad">ca-app-pub-4759125171158565/4113852677</string>
+    <string name="banner_testad">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_test">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="your_email_address">Email Address</string>
+
+</resources>
