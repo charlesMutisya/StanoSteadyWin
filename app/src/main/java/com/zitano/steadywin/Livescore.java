@@ -122,7 +122,7 @@ public class Livescore extends Fragment {
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            webView.loadUrl("https://www.livescore.cz");
+            webView.loadUrl("http://www.livescore.cz");
 
         } else {
             Toast.makeText(getActivity(), "Network problem, please reload the page", Toast.LENGTH_SHORT).show();
@@ -134,7 +134,7 @@ public class Livescore extends Fragment {
                         (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo netInfo = cm.getActiveNetworkInfo();
                 if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-                    webView.loadUrl("https://www.livescore.cz");
+                    webView.loadUrl("http://www.livescore.cz");
 
 
                 } else {
