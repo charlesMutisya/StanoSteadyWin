@@ -30,7 +30,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -38,7 +37,6 @@ import java.io.InputStream;
 public class Livescore extends Fragment {
 
     WebView webView;
-    private InterstitialAd mInterstitialAd;
     ProgressBar progressBar;
     View v;
     SwipeRefreshLayout refresher;
@@ -67,10 +65,6 @@ public class Livescore extends Fragment {
             refresher =  v.findViewById(R.id.refresher);
             refresher.setColorSchemeResources(R.color.blue, R.color.lightBlue, R.color.deepPurple, R.color.purple, R.color.pink, R.color.orange, R.color.red);
 
-
-
-            mInterstitialAd= createNewIntAd();
-            loadIntAdd();
 
             webView = v.findViewById(R.id.webView);
         webView.setFocusableInTouchMode(false);
@@ -204,45 +198,6 @@ public class Livescore extends Fragment {
         super.onConfigurationChanged(newConfig);
     }
 
-    private InterstitialAd createNewIntAd(){
-        InterstitialAd intAd = new InterstitialAd(getContext());
-        // set the adUnitId (defined in values/strings.xml)
-        intAd.setAdUnitId(getString(R.string.interstitial_ad));
-        intAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        showIntAdd();
-                    }
-                }, 15000);
 
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-
-
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Proceed to the next level.
-            }
-        });
-        return intAd;
-    }
-    private void loadIntAdd() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    private void showIntAdd(){
-        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
 
 }

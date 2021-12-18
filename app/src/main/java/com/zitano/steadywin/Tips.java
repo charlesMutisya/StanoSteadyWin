@@ -2,19 +2,25 @@ package com.zitano.steadywin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,9 +31,11 @@ public class Tips extends Fragment {
     LinearLayoutManager mlinearlayout;
     TextView loading;
     DatabaseReference mdatabasereference;
-    FirebaseRecyclerAdapter<Model, DailyTips.ItemViewHolder> firebaseRecyclerAdapter;
-     private AdView adView;
-    private InterstitialAd mInterstitialAd;
+    FirebaseRecyclerAdapter<Model, ViewHolder> firebaseRecyclerAdapter;
+    FirebaseRecyclerOptions<Model> stnselects;
+    private final String TAG = Tips.class.getSimpleName();
+    private  InterstitialAd mInterstatialAd;
+    private AdView adView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,35 +59,86 @@ public class Tips extends Fragment {
         mrecycler.setHasFixedSize(false);
         mlinearlayout = new LinearLayoutManager(getContext());
         mrecycler.setLayoutManager(mlinearlayout);
-    firebaseRecyclerAdapter= new FirebaseRecyclerAdapter<Model, DailyTips.ItemViewHolder>(
-            Model.class,
-            R.layout.listviewcard,
-            DailyTips.ItemViewHolder.class,
-            mdatabasereference
-    ) {
-        @Override
-        protected void populateViewHolder(DailyTips.ItemViewHolder itemViewHolder, Model model, int position) {
-            final String item_key = getRef(position).getKey();
-            itemViewHolder.setTitle(model.getTitle());
-            itemViewHolder.setDetails(model.getBody());
-            itemViewHolder.setTime(model.getTime());
-            loading.setVisibility(View.GONE);
-            itemViewHolder.mnview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent adDetails = new Intent(v.getContext(), PostDetails.class);
-                    adDetails.putExtra("postkey", item_key);
-                    adDetails.putExtra("selection", "dailyplays");
-                    startActivity(adDetails);
-                }
 
-            });
-        }
+        stnselects = new FirebaseRecyclerOptions.Builder<Model>().setQuery(mdatabasereference, Model.class).build();
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Model, ViewHolder>(stnselects) {
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Model model) {
+                final String item_key = getRef(position).getKey();
+                holder.setTitle(model.getTitle());
+                holder.setDetails(model.getBody());
+                holder.setTime(model.getTime());
+                loading.setVisibility(View.GONE);
+                holder.setOnClickListener(new ViewHolder.ClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent adDetails = new Intent(v.getContext(), PostDetails.class);
+                        adDetails.putExtra("postkey", item_key);
+                        adDetails.putExtra("selection", "dailyplays");
+                        startActivity(adDetails);
+                        loadInterst();
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listviewcard, parent, false);
+                ViewHolder viewHolder = new ViewHolder(itemView);
+                return viewHolder;            }
+
     };
         mrecycler.setAdapter(firebaseRecyclerAdapter);
-
+        firebaseRecyclerAdapter.startListening();
     }
 
+    private InterstitialAd loadInterst() {
+        AdRequest adRequest= new AdRequest.Builder().build();
+        InterstitialAd.load(getContext(),getString(R.string.interstitial_ad),adRequest, new InterstitialAdLoadCallback(){
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstatialAd = interstitialAd;
+                mInterstatialAd.show(getActivity());
+                Log.i(TAG, "onAdLoaded");
 
+                mInterstatialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        // Called when fullscreen content is dismissed.
+                        Log.d("TAG", "The ad was dismissed.");
+                    }
+
+
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Called when fullscreen content is shown.
+                        // Make sure to set your reference to null so you don't
+                        // show it a second time.
+                        mInterstatialAd = null;
+                        Log.d("TAG", "The ad was shown.");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+                Log.i(TAG, loadAdError.getMessage());
+                mInterstatialAd = null;
+
+            }
+        });
+        return mInterstatialAd;
+    }
 
 }

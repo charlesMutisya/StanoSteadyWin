@@ -2,6 +2,7 @@ package com.zitano.steadywin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,8 +30,13 @@ public class DailyTips extends Fragment {
     LinearLayoutManager mlinearlayout;
     TextView loading;
     DatabaseReference mdatabasereference;
-    FirebaseRecyclerAdapter<Model, ItemViewHolder> firebaseRecyclerAdapter;
-AdView adView;
+    private final String TAG = DailyTips.class.getSimpleName();
+
+    FirebaseRecyclerAdapter<Model, ViewHolder> firebaseRecyclerAdapter;
+    FirebaseRecyclerOptions<Model> stnselect;
+    private InterstitialAd mInterstatialAd;
+
+    AdView adView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,101 +67,87 @@ AdView adView;
         mrecycler.setHasFixedSize(false);
         mlinearlayout = new LinearLayoutManager(getContext());
         mrecycler.setLayoutManager(mlinearlayout);
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Model, ItemViewHolder>(
-                Model.class,
-                R.layout.listviewcard,
-                ItemViewHolder.class,
-                mdatabasereference
-        ) {
+        stnselect = new FirebaseRecyclerOptions.Builder<Model>().setQuery(mdatabasereference, Model.class).build();
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Model, ViewHolder>(stnselect) {
             @Override
-            protected void populateViewHolder(ItemViewHolder viewHolder, Model model, int position) {
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Model model) {
                 final String item_key = getRef(position).getKey();
-                viewHolder.setTitle(model.getTitle());
-                viewHolder.setDetails(model.getBody());
-                viewHolder.setTime(model.getTime());
+                holder.setTitle(model.getTitle());
+                holder.setDetails(model.getBody());
+                holder.setTime(model.getTime());
                 loading.setVisibility(View.GONE);
-                viewHolder.mnview.setOnClickListener(new View.OnClickListener() {
+                holder.setOnClickListener(new ViewHolder.ClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onItemClick(View v, int position) {
                         Intent adDetails = new Intent(v.getContext(), PostDetails.class);
                         adDetails.putExtra("postkey", item_key);
                         adDetails.putExtra("selection", "2+odds");
                         startActivity(adDetails);
+                        loadInterst();
                     }
 
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+
+                    }
                 });
             }
+
+            @NonNull
+            @Override
+            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listviewcard, parent, false);
+                ViewHolder viewHolder = new ViewHolder(itemView);
+                return viewHolder;
+            }
+
         };
         mrecycler.setAdapter(firebaseRecyclerAdapter);
-
-
+        firebaseRecyclerAdapter.startListening();
     }
+    private InterstitialAd loadInterst() {
+        AdRequest adRequest= new AdRequest.Builder().build();
+        InterstitialAd.load(getContext(),getString(R.string.interstitial_ad),adRequest, new InterstitialAdLoadCallback(){
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstatialAd = interstitialAd;
+                mInterstatialAd.show(getActivity());
+                Log.i(TAG, "onAdLoaded");
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+                mInterstatialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        // Called when fullscreen content is dismissed.
+                        Log.d("TAG", "The ad was dismissed.");
+                    }
 
-        View mnview;
 
-        public ItemViewHolder(View itemView) {
-            super(itemView);
-            mnview = itemView;
-        }
 
-        public void setTitle(String title) {
-            TextView tvTitle = (TextView) mnview.findViewById(R.id.postTitle);
-            tvTitle.setText(title);
-        }
-
-        public void setDetails(String details) {
-
-            TextView txtdetails = (TextView) mnview.findViewById(R.id.post);
-            txtdetails.setText(details);
-
-        }
-
-        public void setTime(Long time) {
-
-            TextView txtTime = (TextView) mnview.findViewById(R.id.postTime);
-            //long elapsedDays=0,elapsedWeeks = 0, elapsedHours=0,elapsedMin=0;
-            long elapsedTime;
-            long currentTime = System.currentTimeMillis();
-            int elapsed = (int) ((currentTime - time) / 1000);
-            if (elapsed < 60) {
-                if (elapsed < 2) {
-                    txtTime.setText("Just Now");
-                } else {
-                    txtTime.setText(elapsed + " sec ago");
-                }
-            } else if (elapsed > 604799) {
-                elapsedTime = elapsed / 604800;
-                if (elapsedTime == 1) {
-                    txtTime.setText(elapsedTime + " week ago");
-                } else {
-
-                    txtTime.setText(elapsedTime + " weeks ago");
-                }
-            } else if (elapsed > 86399) {
-                elapsedTime = elapsed / 86400;
-                if (elapsedTime == 1) {
-                    txtTime.setText(elapsedTime + " day ago");
-                } else {
-                    txtTime.setText(elapsedTime + " days ago");
-                }
-            } else if (elapsed > 3599) {
-                elapsedTime = elapsed / 3600;
-                if (elapsedTime == 1) {
-                    txtTime.setText(elapsedTime + " hour ago");
-                } else {
-                    txtTime.setText(elapsedTime + " hours ago");
-                }
-            } else if (elapsed > 59) {
-                elapsedTime = elapsed / 60;
-                txtTime.setText(elapsedTime + " min ago");
-
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Called when fullscreen content is shown.
+                        // Make sure to set your reference to null so you don't
+                        // show it a second time.
+                        mInterstatialAd = null;
+                        Log.d("TAG", "The ad was shown.");
+                    }
+                });
 
             }
 
-        }
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+                Log.i(TAG, loadAdError.getMessage());
+                mInterstatialAd = null;
+
+            }
+        });
+        return mInterstatialAd;
     }
+
 }
 
 

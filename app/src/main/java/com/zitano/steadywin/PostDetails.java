@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +30,6 @@ import com.luseen.autolinklibrary.AutoLinkTextView;
 public class PostDetails extends AppCompatActivity {
 
     DatabaseReference mRef;
-    private InterstitialAd mInterstitialAd;
     String postKey;
     TextView tvTitle, tvBody, tvTime;
     ImageView imgBody;
@@ -122,52 +120,9 @@ public class PostDetails extends AppCompatActivity {
     }
 
 
-    private InterstitialAd createNewIntAd(){
-        InterstitialAd intAd = new InterstitialAd(PostDetails.this);
-        // set the adUnitId (defined in values/strings.xml)
-        intAd.setAdUnitId(getString(R.string.interstitial_ad));
-        intAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        showIntAdd();
-                    }
-                }, 8000);
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-
-
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Proceed to the next level.
-            }
-        });
-        return intAd;
-    }
-    private void loadIntAdd() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    private void showIntAdd(){
-        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
-
-
     @Override
     public void onBackPressed() {
-        mInterstitialAd= createNewIntAd();
-        loadIntAdd();
+
         finish();
     }
 
