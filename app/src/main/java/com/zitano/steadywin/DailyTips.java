@@ -54,7 +54,6 @@ public class DailyTips extends Fragment {
         adView.loadAd(adRequest);
         return view;
 
-
     }
 
 ;
