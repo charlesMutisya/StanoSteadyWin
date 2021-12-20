@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background_color"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,15 +20,40 @@
     android:theme="@style/AppTheme.AppBarOverlay">
 
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:orientation="horizontal"
+           android:weightSum="2"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:minHeight="?actionBarSize"
+               android:padding="@dimen/appbar_padding"
+
+               android:text="@string/app_name"
+               android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:orientation="vertical"
+               android:gravity="center_vertical"
+               android:layout_height="wrap_content">
+               <com.shrikanthravi.library.NightModeButton
+                   android:layout_width="100dp"
+                   android:layout_height="50dp"
+                   android:id="@+id/nightModeButton"
+                   android:layout_marginTop="16dp"
+                   android:layout_gravity="end"
+                   >
+
+               </com.shrikanthravi.library.NightModeButton>
+           </LinearLayout>
+
+
+       </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -43,6 +69,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
+        android:background="?attr/background_color"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:ignore="SpeakableTextPresentCheck" />
