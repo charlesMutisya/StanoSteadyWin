@@ -1,5 +1,6 @@
 package com.zitano.steadywin;
 
+import android.app.UiModeManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -12,7 +13,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.shrikanthravi.library.NightModeButton;
+
+import com.vimalcvs.switchdn.DayNightSwitch;
+import com.vimalcvs.switchdn.DayNightSwitchAnimListener;
+import com.vimalcvs.switchdn.DayNightSwitchListener;
+import com.zitano.steadywin.ui.main.ThemeSettings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -24,6 +29,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,12 +43,13 @@ import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivityLog";
     private FloatingActionButton fab_main, fab1_mail, fab2_share,fab3_rate;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock;
 
     Boolean isOpen = false;
-    NightModeButton nightModeButton;
-
+    DayNightSwitch nightModeButton;
+    private UiModeManager uiModeManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         tbl_pages.setupWithViewPager(vp_pages);
         Toolbar toolbar= findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         fab1_mail = findViewById(R.id.fab1);
         fab2_share = findViewById(R.id.fab2);
         fab3_rate= findViewById(R.id.fab3);
-        nightModeButton=findViewById(R.id.nightModeButton);
+        nightModeButton=(DayNightSwitch)findViewById(R.id.switch_item);;
 
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_closed);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
@@ -144,44 +151,50 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
                 // Night mode is not active, we're using the light theme
-                nightModeButton.setActivated(false);
+               // nightModeButton.setActivated(false);
+                Log.i(TAG, "Dark mode has not been activated: ");
+                setTheme(R.style.AppTheme);
+                nightModeButton.setIsNight(false);
                 break;
             case Configuration.UI_MODE_NIGHT_YES:
                 // Night mode is active, we're using dark theme
-                nightModeButton.setActivated(true);
+               // nightModeButton.setActivated(true);
+                Log.i(TAG, "Dark mode has been activated: ");
+                setTheme(R.style.darkTheme);
+                nightModeButton.setIsNight(true);
                 break;
         }
-        nightModeButton.setOnSwitchListener(new NightModeButton.OnSwitchListener() {
+        nightModeButton.setDuration(450);
+       // nightModeButton.setIsNight(ThemeSettings.getInstance(this).nightMode);
+
+        nightModeButton.setListener(new DayNightSwitchListener() {
             @Override
-            public void onSwitchListener(boolean isNight) {
-                if(isNight){
-                    Toast.makeText(getApplicationContext(),"Night Mode On",Toast.LENGTH_SHORT).show();
-                    setTheme(R.style.darkTheme);
-                    if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
+            public void onSwitch(boolean isNight) {
+                ThemeSettings.getInstance(MainActivity.this).nightMode = isNight;
+                ThemeSettings.getInstance(MainActivity.this).refreshTheme();
+            }
+        });
 
-                    finish();
-                    startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Night Mode Off",Toast.LENGTH_SHORT).show();
-                    setTheme(R.style.AppTheme);
-                    if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
+        nightModeButton.setAnimListener(new DayNightSwitchAnimListener() {
+            @Override
+            public void onAnimEnd() {
+                Intent intent = new Intent(MainActivity.this, MainActivity.this.getClass());
+                intent.putExtras(getIntent());
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+            @Override
+            public void onAnimValueChanged(float v) {
 
-                    finish();
-                    startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
-                }
+            }
+            @Override
+            public void onAnimStart() {
             }
         });
     }
@@ -245,5 +258,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    public void NightModeON(){
+        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+    }
+
+    public void NightModeOFF(){
+        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
     }
 }

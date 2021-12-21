@@ -52,16 +52,6 @@ public class DailyTips extends Fragment {
         adView= view.findViewById(R.id.adView2);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        return view;
-
-    }
-
-;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
         mrecycler = view.findViewById(R.id.recycler1);
         mrecycler.setHasFixedSize(false);
         mlinearlayout = new LinearLayoutManager(getContext());
@@ -103,6 +93,17 @@ public class DailyTips extends Fragment {
         };
         mrecycler.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
+        return view;
+
+    }
+
+;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
     }
     private InterstitialAd loadInterst() {
         AdRequest adRequest= new AdRequest.Builder().build();

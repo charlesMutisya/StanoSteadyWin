@@ -6,13 +6,12 @@ android {
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.zitano.steadywin"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 13
         versionName "13.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         multiDexEnabled true
     }
     buildTypes {
@@ -46,7 +45,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.facebook.android:audience-network-sdk:6.8.0'
     implementation 'com.google.ads.mediation:facebook:6.8.0.0'
-
+    implementation 'com.github.vimalcvs:Day-Night-Switch:1.0.3'
 
 
 }

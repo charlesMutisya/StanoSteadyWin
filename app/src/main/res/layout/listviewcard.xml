@@ -30,7 +30,7 @@
                 android:textAllCaps="true"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="?attr/text_color"
                 />
 
             <TextView
@@ -41,13 +41,14 @@
                 android:textAllCaps="true"
                 android:textSize="15sp"
                 android:maxLines="3"
+                android:textColor="?attr/text_color_light"
                 />
-
             <TextView
                 android:id="@+id/postTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_time"
+                android:textColor="?attr/text_color_light"
                 android:textSize="12sp" />
         </LinearLayout>
 
