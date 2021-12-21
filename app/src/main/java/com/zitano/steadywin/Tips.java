@@ -48,13 +48,6 @@ public class Tips extends Fragment {
         adView= view.findViewById(R.id.adView3);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        return view;
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         mrecycler = view.findViewById(R.id.recycler);
         mrecycler.setHasFixedSize(false);
         mlinearlayout = new LinearLayoutManager(getContext());
@@ -93,9 +86,19 @@ public class Tips extends Fragment {
                 ViewHolder viewHolder = new ViewHolder(itemView);
                 return viewHolder;            }
 
-    };
+        };
         mrecycler.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
+        return view;
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //The functionality here was transferred to @oncreate because this method is called evertime this fragment comes to view thats why it was refreshind
+        //TODO learn ore about states in android
+
     }
 
     private InterstitialAd loadInterst() {

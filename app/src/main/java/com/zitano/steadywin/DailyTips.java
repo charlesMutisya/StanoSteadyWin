@@ -102,7 +102,8 @@ public class DailyTips extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+//The functionality here was transferred to @oncreate because this method is called evertime this fragment comes to view thats why it was refreshind
+        //TODO learn ore about states in android
 
     }
     private InterstitialAd loadInterst() {
