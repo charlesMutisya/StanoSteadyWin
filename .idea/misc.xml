@@ -3,13 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/New folder/app/src/main/res/layout/activity_main.xml" value="0.2164855072463768" />
-        <entry key="..\:/New folder/app/src/main/res/layout/activity_post_details.xml" value="0.13541666666666666" />
-        <entry key="..\:/New folder/app/src/main/res/menu/home.xml" value="0.25416666666666665" />
-        <entry key="..\:/New folder/app/src/main/res/menu/menub.xml" value="0.25416666666666665" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17391304347826086" />
-        <entry key="app/src/main/res/layout/dailytips.xml" value="0.1203125" />
-        <entry key="app/src/main/res/layout/listviewcard.xml" value="0.1203125" />
+        <entry key="app/src/main/res/layout/activity_feed_back.xml" value="0.10572916666666667" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/activity_post_details.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/app_bar.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/dailytips.xml" value="0.13020833333333334" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/item_menu_switch.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/listviewcard.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/livescore.xml" value="0.10572916666666667" />
+        <entry key="app/src/main/res/layout/tips.xml" value="0.10572916666666667" />
+        <entry key="app/src/main/res/menu/home.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/menu/menub.xml" value="0.16979166666666667" />
       </map>
     </option>
   </component>

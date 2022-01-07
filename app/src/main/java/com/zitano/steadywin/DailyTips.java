@@ -71,6 +71,7 @@ public class DailyTips extends Fragment {
                         Intent adDetails = new Intent(v.getContext(), PostDetails.class);
                         adDetails.putExtra("postkey", item_key);
                         adDetails.putExtra("selection", "2+odds");
+
                         startActivity(adDetails);
                         loadInterst();
                     }

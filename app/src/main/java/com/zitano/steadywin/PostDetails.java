@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -37,8 +40,21 @@ public class PostDetails extends AppCompatActivity {
     String selection;
     AutoLinkTextView autoLinkTextView;
     AdView madview;
+    private static final String TAG = "PostDetailsLog";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPref = getSharedPreferences("com.zitano.steadywin.PREFERENCE_FILE_KEY",Context.MODE_PRIVATE);
+
+        if (isNightModeEnabled())
+        {
+            setTheme(R.style.darkTheme);
+            Log.i(TAG, "Night mode has been enabled");
+        }
+        else
+        {
+            setTheme(R.style.AppTheme);
+            Log.i(TAG, "Night mode has not been enabled");
+        }
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -219,5 +235,9 @@ public class PostDetails extends AppCompatActivity {
 
         }
 
+    }
+    private SharedPreferences mSharedPref;
+    private boolean isNightModeEnabled() {
+        return  mSharedPref.getBoolean("settings", false);
     }
 }
