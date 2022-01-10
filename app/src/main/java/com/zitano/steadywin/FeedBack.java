@@ -3,9 +3,12 @@ package com.zitano.steadywin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +19,28 @@ public class FeedBack extends AppCompatActivity {
     Button btnSubmit;
     EditText txtFeed, txtEmail;
     String email;
+    private static final String TAG = "FeedbackLog";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPref = getSharedPreferences("com.zitano.steadywin.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+
+        if (isNightModeEnabled())
+        {
+            setTheme(R.style.darkTheme);
+            Log.i(TAG, "Night mode has been enabled");
+        }
+        else
+        {
+            setTheme(R.style.AppTheme);
+            Log.i(TAG, "Night mode has not been enabled");
+        }
         super.onCreate(savedInstanceState);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
         setContentView(R.layout.activity_feed_back);
 
         btnSubmit = findViewById(R.id.btnfeed);
@@ -65,4 +83,9 @@ public class FeedBack extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+    private SharedPreferences mSharedPref;
+    private boolean isNightModeEnabled() {
+        return  mSharedPref.getBoolean("settings", false);
+    }
+
 }

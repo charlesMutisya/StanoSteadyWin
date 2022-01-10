@@ -59,6 +59,7 @@ public class PostDetails extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         }
         setContentView(R.layout.activity_post_details);
         postKey = getIntent().getExtras().getString("postkey");
@@ -144,6 +145,7 @@ public class PostDetails extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menub, menu);
         return  true;
     }
