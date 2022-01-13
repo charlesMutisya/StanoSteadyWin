@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#18227c</color>
-    <color name="colorPrimaryDark">#00004f</color>
-    <color name="colorAccent">#514aac</color>
+    <color name="colorPrimary">#013c98</color>
+    <color name="colorPrimaryDark">#033581</color>
+    <color name="colorAccent">#19407e</color>
     <color name="orange"> #ff9800</color>
     <color name="green"> #4caf50</color>
     <color name="lightBlue"> #03a9f4</color>
@@ -12,11 +12,9 @@
     <color name="blue"> #2196f3</color>
     <color name="red">#F44336</color>
     <color name="grey">#757575</color>
-
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
-
     <color name="colorBlack">#000</color>
 
 </resources>
